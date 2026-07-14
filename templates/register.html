@@ -1,0 +1,227 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register | ElderlyCare+</title>
+
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+  <style>
+    /* Eye icon style */
+    .password-wrapper {
+        position: relative;
+    }
+
+    .password-wrapper i {
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        cursor: pointer;
+        color: #555;
+    }
+
+    /* Reduced spacing between fields */
+    .input-group {
+        margin-bottom: 8px !important;
+    }
+
+    /* Error message spacing */
+    .error-msg {
+        color: red;
+        font-size: 12px;
+        margin-top: 2px;
+        height: 14px;
+    }
+
+    /* Password strength spacing */
+    #strength {
+        font-size: 12px;
+        height: 14px;
+        margin-top: 2px;
+        font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LEFT IMAGE -->
+  <div class="left-side">
+    <div class="hero-overlay">
+      <h1>Create Account</h1>
+      <p>Start your personalized health care journey.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM -->
+  <div class="right-side">
+    <div class="login-box">
+
+      <h2>Register</h2>
+      <p>Fill the details to create account</p>
+
+      <form id="registerForm" method="POST" action="{{ url_for('register') }}">
+
+        <!-- NAME -->
+        <div class="input-group">
+          <input type="text" id="name" name="name" placeholder="Full Name" required>
+          <div id="nameError" class="error-msg"></div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="input-group">
+          <input type="email" id="email" name="email" placeholder="Email" required>
+          <div id="emailError" class="error-msg"></div>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="input-group password-wrapper">
+          <input type="password" id="password" name="password" placeholder="Password" required>
+          <i class="fa-solid fa-eye" id="togglePassword"></i>
+        </div>
+        <div id="strength"></div>
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="input-group password-wrapper">
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+          <i class="fa-solid fa-eye" id="toggleConfirm"></i>
+          <div id="confirmError" class="error-msg"></div>
+        </div>
+
+        <button class="btn" type="submit">Register</button>
+
+      </form>
+
+      <p class="register-text">
+        Already have an account?
+        <a href="{{ url_for('login') }}">Login</a>
+      </p>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- SUCCESS POPUP -->
+{% if success %}
+<script>
+Swal.fire({
+    title: "Registration Successful!",
+    text: "Redirecting to login...",
+    icon: "success",
+    timer: 2000
+}).then(() => window.location.href = "{{ url_for('login') }}");
+</script>
+{% endif %}
+
+<!-- VALIDATION SCRIPT -->
+<script>
+
+// PASSWORD EYE
+document.getElementById("togglePassword").onclick = () => {
+    let pwd = document.getElementById("password");
+    pwd.type = pwd.type === "password" ? "text" : "password";
+};
+
+document.getElementById("toggleConfirm").onclick = () => {
+    let cpwd = document.getElementById("confirm_password");
+    cpwd.type = cpwd.type === "password" ? "text" : "password";
+};
+
+// FIELD ELEMENTS
+let nameField = document.getElementById("name");
+let emailField = document.getElementById("email");
+let passField = document.getElementById("password");
+let confirmField = document.getElementById("confirm_password");
+
+// ERROR ELEMENTS
+let nameError = document.getElementById("nameError");
+let emailError = document.getElementById("emailError");
+let confirmError = document.getElementById("confirmError");
+let strengthMsg = document.getElementById("strength");
+
+// NAME VALIDATION
+nameField.addEventListener("input", function() {
+    if (this.value.trim().length < 3)
+        nameError.textContent = "Name must be at least 3 characters";
+    else
+        nameError.textContent = "";
+});
+
+// EMAIL VALIDATION
+emailField.addEventListener("input", function() {
+    let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    if (!pattern.test(this.value.trim()))
+        emailError.textContent = "Enter a valid email address";
+    else
+        emailError.textContent = "";
+});
+
+// PASSWORD STRENGTH
+passField.addEventListener("input", function() {
+    let pass = this.value;
+
+    if (pass.length < 6) {
+        strengthMsg.style.color = "red";
+        strengthMsg.textContent = "Weak password ❌";
+    }
+    else if (pass.length < 10) {
+        strengthMsg.style.color = "orange";
+        strengthMsg.textContent = "Medium password ⚠️";
+    }
+    else {
+        strengthMsg.style.color = "green";
+        strengthMsg.textContent = "Strong password ✔️";
+    }
+});
+
+// CONFIRM PASSWORD
+confirmField.addEventListener("input", function() {
+    if (this.value !== passField.value)
+        confirmError.textContent = "Passwords do not match";
+    else
+        confirmError.textContent = "";
+});
+
+// FINAL SUBMIT CHECK
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+
+    let hasError = false;
+
+    if (nameField.value.trim().length < 3) {
+        nameError.textContent = "Name must be at least 3 characters";
+        hasError = true;
+    }
+
+    if (!/^[^ ]+@[^ ]+\.[a-z]{2,3}$/.test(emailField.value.trim())) {
+        emailError.textContent = "Enter a valid email address";
+        hasError = true;
+    }
+
+    if (passField.value.length < 6) {
+        strengthMsg.style.color = "red";
+        strengthMsg.textContent = "Weak password ❌";
+        hasError = true;
+    }
+
+    if (confirmField.value !== passField.value) {
+        confirmError.textContent = "Passwords do not match";
+        hasError = true;
+    }
+
+    if (hasError) e.preventDefault();
+});
+
+</script>
+
+</body>
+</html>

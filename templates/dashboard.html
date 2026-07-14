@@ -1,0 +1,514 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ElderlyCare+ Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    .quick-options{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:8px;
+}
+
+.quick-options button{
+    background:#e6f7ef;
+    border:1px solid #2ecc71;
+    color:#065f46;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.quick-options button:hover{
+    background:#2ecc71;
+    color:white;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#f3f7ff,#f9fbff);
+    min-height:100vh;
+}
+
+.wrapper{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    background:linear-gradient(180deg,#052657,#083b8f);
+    color:white;
+    padding:30px 22px;
+    border-radius:0 32px 32px 0;
+    box-shadow:5px 0 25px rgba(0,0,0,0.25);
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar h1{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:40px;
+}
+.sidebar h1 span{color:#4ac7ff;}
+
+.sidebar a{
+    text-decoration:none;
+    color:white;
+    padding:14px 18px;
+    border-radius:14px;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-size:16px;
+    transition:.3s;
+}
+
+.sidebar a.active,
+.sidebar a:hover{
+    background:#0d6efd;
+}
+
+.logout{margin-top:auto;}
+.logout a{background:#ff4d4d;}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:50px 60px;
+}
+
+.header h2{
+    font-size:34px;
+    font-weight:700;
+    color:#1e2a5a;
+}
+.header p{
+    margin-top:6px;
+    color:#6b7280;
+}
+
+.grid{
+    margin-top:45px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:32px;
+}
+
+.card{
+    height:210px;
+    border-radius:26px;
+    padding:32px 28px;
+    box-shadow:0 22px 50px rgba(0,0,0,0.12);
+    cursor:pointer;
+    transition:.35s;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.card:hover{transform:translateY(-6px);}
+
+.icon{
+    width:64px;
+    height:64px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    color:white;
+    margin-bottom:18px;
+}
+
+.health{ background:#fff4e5; }
+.health .icon{ background:#ffb703; }
+
+.risk{ background:#eef3ff; }
+.risk .icon{ background:#3f5efb; }
+
+.reminder{ background:#f3efff; }
+.reminder .icon{ background:#7f5af0; }
+
+.doctor{ background:#eafff7; }
+.doctor .icon{ background:#2ecc71; }
+
+.card h3{
+    font-size:20px;
+    margin-bottom:6px;
+    color:#111827;
+}
+.card p{
+    font-size:14.5px;
+    color:#4b5563;
+}
+
+/* ================= HEALTH ASSIST BUTTON ================= */
+.chat-btn{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:linear-gradient(135deg,#2ecc71,#27ae60);
+    color:white;
+    padding:14px 20px;
+    border-radius:40px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 15px 30px rgba(0,0,0,0.25);
+    z-index:999;
+}
+
+/* CHAT WINDOW */
+.chatbox{
+    position:fixed;
+    bottom:90px;
+    right:25px;
+    width:330px;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.25);
+    display:none;
+    flex-direction:column;
+    z-index:999;
+}
+
+.chat-header{
+    background:#2ecc71;
+    color:white;
+    padding:16px;
+    border-radius:20px 20px 0 0;
+    font-weight:600;
+    display:flex;
+    justify-content:space-between;
+}
+
+.chat-body{
+    padding:15px;
+    height:260px;
+    overflow-y:auto;
+    font-size:14px;
+}
+
+.chat-footer{
+    display:flex;
+    padding:10px;
+    border-top:1px solid #ddd;
+}
+
+.chat-footer input{
+    flex:1;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+.chat-footer button{
+    margin-left:8px;
+    background:#22c55e;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+}
+
+.bot{
+    background:#eef2ff;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:8px;
+}
+.user{
+    background:#dcfce7;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:8px;
+    text-align:right;
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+    .grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:768px){
+    .sidebar{width:90px;padding:20px 10px;}
+    .sidebar h1{font-size:18px;text-align:center;}
+    .sidebar a span{display:none;}
+    .main{padding:30px;}
+    .grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h1>Elderly<span>Care+</span></h1>
+
+        <a class="active" href="{{ url_for('dashboard') }}">
+            <i class="fa-solid fa-house"></i><span>Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('add_health') }}">
+            <i class="fa-solid fa-file-medical"></i><span>Health Input</span>
+        </a>
+
+        <a href="{{ url_for('my_risk') }}">
+            <i class="fa-solid fa-brain"></i><span>Risk Prediction</span>
+        </a>
+
+        <a href="{{ url_for('reminders_page') }}">
+            <i class="fa-solid fa-bell"></i><span>Reminders</span>
+        </a>
+
+        <a href="{{ url_for('doctor_suggestions_page') }}">
+            <i class="fa-solid fa-user-doctor"></i><span>Doctor Suggestions</span>
+        </a>
+
+        <div class="logout">
+            <a href="{{ url_for('logout') }}">
+                <i class="fa-solid fa-power-off"></i><span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+        <div class="header">
+            <h2>Welcome back, {{ current_user.name }} 👋</h2>
+            <p>Manage elderly health tasks easily</p>
+        </div>
+
+        <div class="grid">
+            <div class="card health" onclick="location.href='{{ url_for('add_health') }}'">
+                <div class="icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                <h3>Health Data Input</h3>
+                <p>Add elderly vitals and symptoms.</p>
+            </div>
+
+            <div class="card risk" onclick="location.href='{{ url_for('my_risk') }}'">
+                <div class="icon"><i class="fa-solid fa-lightbulb"></i></div>
+                <h3>Predict Health Risk</h3>
+                <p>AI will evaluate health status.</p>
+            </div>
+
+            <div class="card reminder" onclick="location.href='{{ url_for('reminders_page') }}'">
+                <div class="icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <h3>Health Reminders</h3>
+                <p>Medication & food schedules.</p>
+            </div>
+
+            <div class="card doctor" onclick="location.href='{{ url_for('doctor_suggestions_page') }}'">
+                <div class="icon"><i class="fa-solid fa-location-dot"></i></div>
+                <h3>Doctor Suggestions</h3>
+                <p>Find specialists based on health risk and location.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HEALTH ASSIST BUTTON -->
+<div class="chat-btn" onclick="toggleChat()">
+    <i class="fa-solid fa-heart-pulse"></i> Health Assist
+</div>
+
+<!-- CHAT WINDOW -->
+<div class="chatbox" id="chatbox">
+    <div class="chat-header">
+        Health Assist
+        <span style="cursor:pointer" onclick="toggleChat()">✖</span>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+        <div class="bot">
+            Hello 👋 I am your Health Assist.<br>
+            Type keywords like:<br>
+            <b>heart</b>, <b>breathing</b>, <b>fall</b>, <b>unconscious</b>
+        </div>
+    </div>
+
+    <div class="chat-footer">
+        <input type="text" id="msg" placeholder="Describe the health issue...">
+        <button onclick="sendMsg()">Send</button>
+    </div>
+</div>
+
+ <script>
+let lastContext = "";
+
+function toggleChat(){
+    const chat = document.getElementById("chatbox");
+    chat.style.display = chat.style.display === "flex" ? "none" : "flex";
+}
+
+function sendMsg(){
+    const input = document.getElementById("msg");
+    const userText = input.value.trim();
+    if(userText === "") return;
+
+    const text = userText.toLowerCase();
+    const chatBody = document.getElementById("chatBody");
+
+    chatBody.innerHTML += `<div class="user">${userText}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    let reply = "";
+
+    /* ================= DOCTOR LOGIC ================= */
+
+    // FEVER
+    if(text.includes("fever")){
+        lastContext = "fever";
+        reply = `
+        🌡 <b>Fever</b><br>
+        I understand you are having fever.<br><br>
+        Please tell me:
+        <ul>
+            <li>Since how many days?</li>
+            <li>Is there body pain or headache?</li>
+            <li>Any cold or cough?</li>
+        </ul>
+        `;
+    }
+
+    // FEVER FOLLOW-UP
+    else if(lastContext === "fever" && (text.includes("day") || text.includes("pain") || text.includes("body"))){
+        reply = `
+        This sounds like a <b>viral fever</b>.<br><br>
+        ✅ What you should do:
+        <ul>
+            <li>Take complete rest</li>
+            <li>Drink warm water and fluids</li>
+            <li>Paracetamol if temperature is high</li>
+            <li>Eat light food</li>
+        </ul>
+        ⚠️ If fever lasts more than <b>3 days</b>, please consult a doctor.
+        `;
+        lastContext = "";
+    }
+
+    // COLD / COUGH
+    else if(text.includes("cold") || text.includes("cough")){
+        reply = `
+        🤧 <b>Cold / Cough</b><br><br>
+        • Do steam inhalation twice daily<br>
+        • Avoid cold food and drinks<br>
+        • Drink warm water<br>
+        • Take cough syrup if prescribed<br><br>
+        ⚠️ Visit a doctor if cough is severe or chest pain occurs.
+        `;
+    }
+
+    // HEADACHE
+    else if(text.includes("headache")){
+        reply = `
+        🤕 <b>Headache</b><br><br>
+        • Rest in a quiet place<br>
+        • Drink enough water<br>
+        • Avoid screen usage for some time<br>
+        • Mild painkiller if needed<br><br>
+        ⚠️ If headache is severe or continuous, consult a doctor.
+        `;
+    }
+
+    // STOMACH PAIN
+    else if(text.includes("stomach") || text.includes("abdominal")){
+        reply = `
+        🍽 <b>Stomach Pain</b><br><br>
+        • Eat light food<br>
+        • Avoid oily and spicy food<br>
+        • Drink warm water<br><br>
+        ⚠️ Consult doctor if pain is severe, vomiting, or continuous.
+        `;
+    }
+
+    // BP
+    else if(text.includes("bp") || text.includes("blood pressure")){
+        reply = `
+        ❤️ <b>Blood Pressure</b><br><br>
+        • Avoid stress and salty food<br>
+        • Take BP medicines regularly<br>
+        • Monitor BP daily<br><br>
+        ⚠️ Consult doctor if BP is very high or dizziness occurs.
+        `;
+    }
+
+    // DIABETES
+    else if(text.includes("sugar") || text.includes("diabetes")){
+        reply = `
+        🩸 <b>Blood Sugar</b><br><br>
+        • Avoid sweets and sugar<br>
+        • Take medicines/insulin on time<br>
+        • Check sugar levels regularly<br><br>
+        ⚠️ Visit doctor if weakness, sweating, or dizziness occurs.
+        `;
+    }
+
+    // BREATHING – EMERGENCY
+    else if(text.includes("breathing") || text.includes("breath")){
+        reply = `
+        🚨 <b>Breathing Difficulty</b><br><br>
+        • Sit upright immediately<br>
+        • Use inhaler if prescribed<br>
+        • Loosen tight clothing<br><br>
+        ⚠️ Call <b>108</b> immediately if breathing worsens.
+        `;
+    }
+
+    // FALL
+    else if(text.includes("fall")){
+        reply = `
+        ⚠️ <b>Fall Injury</b><br><br>
+        • Do not move if pain is severe<br>
+        • Apply ice if swelling present<br>
+        • Seek medical help if unable to walk<br><br>
+        🚑 Call <b>108</b> if serious injury suspected.
+        `;
+    }
+
+    // DEFAULT DOCTOR RESPONSE
+    else{
+        reply = `
+        🩺 I understand your concern.<br><br>
+        Please describe:
+        <ul>
+            <li>What symptoms you are facing</li>
+            <li>Since how long</li>
+            <li>Age of the patient</li>
+        </ul>
+        This will help me guide you better.
+        `;
+    }
+
+    setTimeout(()=>{
+        chatBody.innerHTML += `<div class="bot">${reply}</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }, 600);
+
+    input.value = "";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+/* ===== GLOBAL ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #eef3ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.auth-container {
+  display: flex;
+  width: 85%;
+  max-width: 1100px;
+  height: 650px;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+/* LEFT SIDE IMAGE */
+.auth-left {
+  flex: 1;
+  background: url("../images/bg.png") center center / cover no-repeat;
+  position: relative;
+}
+
+.auth-left::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+/* RIGHT SIDE FORM */
+.auth-right {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.auth-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #003366;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: #777;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* INPUTS */
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1.5px solid #c7d3e3;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74,144,226,0.4);
+}
+
+/* ERRORS */
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+  display: none;
+}
+
+/* BUTTON */
+.btn {
+  width: 100%;
+  padding: 14px;
+  background: #4a90e2;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background: #0066cc;
+  transform: translateY(-3px);
+}
+
+/* SWITCH LINKS */
+.switch-text {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.switch-text a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .auth-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .auth-left {
+    height: 250px;
+  }
+  .auth-right {
+    padding: 30px;
+  }
+}

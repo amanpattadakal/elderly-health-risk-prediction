@@ -1,0 +1,227 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Data Input | ElderlyCare+</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/health_form.css') }}">
+
+    <style>
+        .logout-btn {
+            margin-top: 40px;
+            display: block;
+            padding: 12px;
+            background: #ff4747;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: #d93636;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #0d6efd;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<!-- ================= INSTRUCTION POPUP ================= -->
+<div id="instructionModal" class="modal-overlay">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h3>📋 Please Read Before Entering Health Details</h3>
+            <span class="close-btn" onclick="closeModal()">✖</span>
+        </div>
+
+        <div class="modal-content">
+            <ol>
+                <li>This system is designed only for users aged 50 years and above.</li>
+                <li>Enter correct and recent health measurements.</li>
+                <li>Ensure blood pressure values are accurate.</li>
+                <li>Mandatory fields should not be left empty.</li>
+                <li>Clearly describe your symptoms.</li>
+                <li>Your health data is stored securely.</li>
+                <li>Incorrect inputs may lead to inaccurate results.</li>
+                <li>This system provides preventive guidance only.</li>
+                <li>For emergencies, consult a doctor immediately.</li>
+                <li>Review all details before submitting the form.</li>
+            </ol>
+        </div>
+
+        <div class="modal-footer">
+            <button class="accept-btn" onclick="closeModal()">I Understand</button>
+        </div>
+
+    </div>
+</div>
+
+<body class="health-body">
+
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar">
+    <h2 class="sidebar-title">Elderly<span>Care+</span></h2>
+
+    <nav class="sidebar-menu">
+        <a href="{{ url_for('dashboard') }}">🏠 Dashboard</a>
+        <a class="active" href="{{ url_for('add_health') }}">📝 Health Data Input</a>
+        <a href="{{ url_for('my_risk') }}">🔬 Predictions</a>
+        <a href="{{ url_for('reminders_page') }}">⏰ Reminders</a>
+        <a href="{{ url_for('doctor_suggestions_page') }}">🏥 Doctor Suggestions</a>
+    </nav>
+
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+</aside>
+
+<!-- ================= MAIN CONTENT ================= -->
+<main class="main-content">
+    <h1 class="page-title">Complete Health Assessment Form</h1>
+
+    <form action="{{ url_for('add_health') }}" method="POST" class="form-container" id="healthForm">
+
+        <!-- PERSONAL INFO -->
+        <h3 class="section-title">🧍 Personal Information</h3>
+
+        <div class="grid-2">
+            <div class="form-input">
+                <label>Full Name</label>
+                <input type="text" name="name" required placeholder="Enter Patient Name">
+            </div>
+
+            <div class="form-input">
+                <label>Age</label>
+                <input type="number" name="age" id="age" required min="50" placeholder="Enter Age (50+)">
+                <div class="error-msg" id="ageError"></div>
+            </div>
+
+            <div class="form-input">
+                <label>Gender</label>
+                <select name="gender" required>
+                    <option disabled selected>Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-input">
+                <label>City / Location</label>
+                <input type="text" name="city" placeholder="Enter City">
+            </div>
+        </div>
+
+        <!-- VITALS -->
+        <h3 class="section-title">💙 Vital Health Parameters</h3>
+
+        <div class="grid-2">
+            <div class="form-input">
+                <label>Systolic BP</label>
+                <input type="number" name="systolic_bp" placeholder="120">
+            </div>
+
+            <div class="form-input">
+                <label>Diastolic BP</label>
+                <input type="number" name="diastolic_bp" placeholder="80">
+            </div>
+
+            <div class="form-input">
+                <label>Heart Rate (bpm)</label>
+                <input type="number" name="heart_rate" placeholder="72">
+            </div>
+
+            <div class="form-input">
+                <label>Body Temperature (°C)</label>
+                <input type="number" step="0.1" name="temperature" placeholder="36.8">
+            </div>
+
+            <div class="form-input">
+                <label>Weight (kg)</label>
+                <input type="number" name="weight">
+            </div>
+
+            <div class="form-input">
+                <label>Height (cm)</label>
+                <input type="number" name="height">
+            </div>
+
+            <div class="form-input full-width">
+                <label>Blood Sugar</label>
+                <input type="number" name="sugar">
+            </div>
+        </div>
+
+        <!-- MEDICAL -->
+        <h3 class="section-title">🩺 Medical History</h3>
+
+        <div class="form-input full-width">
+            <label>Symptoms</label>
+            <textarea name="symptoms" required></textarea>
+        </div>
+
+        <div class="form-input full-width">
+            <label>Past Medical History</label>
+            <textarea name="history"></textarea>
+        </div>
+
+        <div class="form-input full-width">
+            <label>Current Medication</label>
+            <textarea name="medications"></textarea>
+        </div>
+
+        <div class="form-input full-width">
+            <label>Allergies</label>
+            <textarea name="allergies"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">💾 Save Health Data</button>
+    </form>
+</main>
+
+<!-- ================= JS VALIDATION ================= -->
+<script>
+document.getElementById("healthForm").addEventListener("submit", function(e) {
+    const age = document.getElementById("age").value;
+    const error = document.getElementById("ageError");
+
+    if (age < 50) {
+        error.innerText = "This system is designed only for users aged 50 and above.";
+        e.preventDefault();
+    } else {
+        error.innerText = "";
+    }
+});
+</script>
+<script>
+function closeModal() {
+    document.getElementById("instructionModal").style.display = "none";
+}
+
+window.onload = function () {
+    document.getElementById("instructionModal").style.display = "flex";
+};
+</script>
+
+
+</body>
+</html>

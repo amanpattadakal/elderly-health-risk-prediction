@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Patient Report</title>
+<style>
+body{font-family:Poppins;background:#eaf2ff;padding:40px;}
+.card{
+    width:60%;margin:auto;background:white;padding:30px;
+    border-radius:15px;box-shadow:0 0 12px rgba(0,0,0,.1);
+}
+h2{text-align:center;color:#003a7a;margin-bottom:15px;}
+p{font-size:18px;margin:6px 0;}
+.label{font-weight:600;color:#003366;}
+.btn-box{margin-top:20px;text-align:center;}
+.btn{
+    background:#005eff;color:white;text-decoration:none;
+    padding:10px 18px;border-radius:6px;margin:10px;display:inline-block;
+}
+.btn:hover{background:#003fa3;}
+.risk-btn{background:#ff9800;}
+.risk-btn:hover{background:#cc7a00;}
+.pdf-btn{background:#07a20b;}
+.pdf-btn:hover{background:#05750a;}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Patient Health Summary</h2>
+    
+    <p><span class="label">Name:</span> {{record.name}}</p>
+    <p><span class="label">Age:</span> {{record.age}}</p>
+    <p><span class="label">Gender:</span> {{record.gender}}</p>
+    <p><span class="label">City:</span> {{record.city}}</p>
+
+    <hr>
+
+    <p><span class="label">BP:</span> {{record.systolic_bp}} / {{record.diastolic_bp}}</p>
+    <p><span class="label">Heart Rate:</span> {{record.heart_rate}}</p>
+    <p><span class="label">Temperature:</span> {{record.temperature}}°C</p>
+    <p><span class="label">Weight:</span> {{record.weight}} kg</p>
+    <p><span class="label">Height:</span> {{record.height}} cm</p>
+    <p><span class="label">Sugar:</span> {{record.sugar}}</p>
+
+    <hr>
+
+    <p><span class="label">Symptoms:</span><br>{{record.symptoms}}</p>
+    <p><span class="label">History:</span><br>{{record.history}}</p>
+    <p><span class="label">Medication:</span><br>{{record.medications}}</p>
+    <p><span class="label">Allergies:</span><br>{{record.allergies}}</p>
+
+    <div class="btn-box">
+        <a href="/risk/{{record.id}}" class="btn risk-btn">🔍 Predict Risk</a>
+        <a href="/download/{{record.id}}" class="btn pdf-btn">📄 Generate PDF</a>
+        <a href="/health_records" class="btn">⬅ Back</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+ /* Whole Page */
+.dashboard-body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #eef3f9;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background: linear-gradient(180deg, #003b80, #0066cc);
+  padding: 30px 20px;
+  box-sizing: border-box;
+  color: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.sidebar-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.sidebar-title span {
+  color: #8fcfff;
+}
+
+.sidebar-menu a {
+  display: block;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.sidebar-menu a i {
+  margin-right: 10px;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu .active {
+  background: #8fcfff;
+  color: #003b80 !important;
+  font-weight: 600;
+}
+
+/* Logout Button */
+.logout-btn {
+  display: block;
+  margin-top: 40px;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  background: #ff4d4d;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #cc0000;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 280px;
+  padding: 40px 50px;
+  width: calc(100% - 280px);
+}
+
+.page-heading {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 35px;
+}
+
+/* Cards Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: #333;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.card .icon {
+  font-size: 44px;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  margin: 10px 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.card p {
+  font-size: 14px;
+  color: #666;
+}

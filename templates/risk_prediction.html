@@ -1,0 +1,201 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Risk Result | ElderlyCare+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --primary:#3458d5;
+    --primary-dark:#243a8f;
+    --low:#2ecc71;
+    --moderate:#f39c12;
+    --high:#e74c3c;
+    --bg:#f4f7ff;
+}
+
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:var(--bg);
+}
+
+/* CONTAINER */
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+    padding:30px 10px;
+}
+.header h1{
+    margin:0;
+    color:#1f2d5c;
+}
+.header p{
+    color:#555;
+    margin-top:8px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* RISK */
+.score{
+    font-size:44px;
+    font-weight:700;
+    margin:15px 0;
+    color:var(--primary);
+}
+.badge{
+    display:inline-block;
+    padding:6px 18px;
+    border-radius:16px;
+    font-weight:600;
+    font-size:14px;
+}
+.Low{background:#e9f9ee;color:var(--low);}
+.Moderate{background:#fff4e5;color:var(--moderate);}
+.High{background:#fdeaea;color:var(--high);}
+
+/* BAR */
+.bar{
+    height:14px;
+    background:#e1e6ff;
+    border-radius:8px;
+    overflow:hidden;
+    margin-top:15px;
+}
+.fill{
+    height:100%;
+    width:{{ score }}%;
+    background:var(--primary);
+}
+
+/* GRAPH */
+.graph img{
+    max-width:100%;
+    height:auto;
+}
+
+/* ACTIONS */
+.actions{
+    margin-top:35px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+/* BUTTONS */
+.btn{
+    padding:14px 36px;
+    border-radius:30px;
+    font-weight:600;
+    text-decoration:none;
+    display:inline-block;
+    transition:0.2s;
+}
+
+.btn-primary{
+    background:var(--primary);
+    color:white;
+}
+.btn-primary:hover{
+    background:var(--primary-dark);
+}
+
+.btn-secondary{
+    background:white;
+    color:var(--primary);
+    border:2px solid var(--primary);
+}
+.btn-secondary:hover{
+    background:#eef2ff;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+    .score{
+        font-size:38px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Health Risk Prediction</h1>
+        <p>AI-based health analysis using Random Forest Machine Learning</p>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="grid">
+
+        <!-- LEFT CARD -->
+        <div class="card">
+            <h2>Overall Health Risk</h2>
+            <div class="score">{{ score }}%</div>
+            <span class="badge {{ status }}">{{ status }} Risk</span>
+
+            <div class="bar">
+                <div class="fill"></div>
+            </div>
+
+            <p style="margin-top:15px;color:#555;">
+                This risk score indicates the likelihood of potential health
+                complications based on patient health data.
+            </p>
+        </div>
+
+        <!-- RIGHT CARD -->
+        <div class="card graph">
+            <h2>Risk Distribution</h2>
+            <img src="{{ url_for('static', filename=graph_path.split('static/')[1]) }}">
+        </div>
+
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="actions">
+        <a href="{{ url_for('doctor_suggestions_page') }}" class="btn btn-primary">
+            🏥 Doctor Suggestions
+        </a>
+
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+            ⬅ Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>
